@@ -6,23 +6,28 @@ namespace Player
     [RequireComponent(typeof(NavMeshAgent))]
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private Transform targetToMove;
-
+        private const string TerrainLayerName = "Terrain";
         private NavMeshAgent _agent;
+        private Camera _main;
 
         private void Start()
         {
             _agent = GetComponent<NavMeshAgent>();
+            _main = Camera.main;
         }
 
         private void Update()
         {
-            Move();
+            if (Input.GetMouseButtonDown(1)) 
+                Move();
         }
 
         private void Move()
         {
-            _agent.SetDestination(targetToMove.position);
+            var ray = _main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out var hitInfo, float.MaxValue, LayerMask.GetMask(TerrainLayerName)))
+                _agent.SetDestination(hitInfo.point);
         }
     }
 }

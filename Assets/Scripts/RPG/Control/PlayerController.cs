@@ -28,26 +28,29 @@ namespace RPG.Control
 
         private void Update()
         {
+            _movementAnimation.Blend();
+            
             var ray = _main.ScreenPointToRay(Input.mousePosition);
-            var casted = Physics.Raycast(ray, out var hitInfo, float.MaxValue);
+            var casted = Physics.Raycast(ray, out var hitInfo);
             if (!casted) return;
 
-            MoveTo(hitInfo.point);
-            Attack(hitInfo.collider.gameObject.GetComponent<CombatTarget>());
+            if (TryAttack(hitInfo.collider.gameObject.GetComponent<CombatTarget>())) return;
+            if (TryMoveTo(hitInfo.point)) return;
         }
 
-        private void MoveTo(Vector3 destination)
+        private bool TryMoveTo(Vector3 destination)
         {
-            if (Input.GetMouseButton(0))
+            var lmbPressed = Input.GetMouseButton(0);
+            if (lmbPressed)
                 _movement.MoveTo(destination);
-
-            _movementAnimation.Blend();
+            return lmbPressed;
         }
         
-        private void Attack(CombatTarget target)
+        private bool TryAttack(CombatTarget target)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && target) 
                 _fighter.Attack(target);
+            return target;
         }
     }
 }

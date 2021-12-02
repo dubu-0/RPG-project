@@ -13,5 +13,18 @@ namespace RPG.Locomotion
         }
 
         public void MoveTo(Vector3 destination) => _agent.SetDestination(destination);
+        public void MoveTo(Vector3 destination, float offset)
+        {
+            var vectorFromDestinationToAgent = _agent.transform.position - destination;
+
+            var newDestination = new Vector3
+            {
+                x = destination.x + vectorFromDestinationToAgent.normalized.x * offset,
+                y = destination.y,
+                z = destination.z + vectorFromDestinationToAgent.normalized.z * offset
+            };
+
+            _agent.SetDestination(newDestination);
+        }
     }
 }

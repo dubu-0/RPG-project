@@ -48,8 +48,14 @@ namespace RPG.Control
         
         private bool TryAttack(CombatTarget target)
         {
-            if (Input.GetMouseButtonDown(0) && target) 
+            const float offset = 2.5f;
+            
+            if (Input.GetMouseButtonDown(0) && target)
+            {
                 _fighter.Attack(target);
+                _movement.MoveTo(target.transform.position, offset);
+            }
+
             return target;
         }
     }

@@ -11,9 +11,10 @@ namespace RPG.Locomotion
         {
             _agent = agent;
         }
-
-        public void MoveTo(Vector3 destination) => _agent.SetDestination(destination);
-        public void MoveTo(Vector3 destination, float offset)
+        
+        public bool IsStopped() => _agent.velocity.magnitude == 0;
+        public void SetDestination(Vector3 destination) => _agent.SetDestination(destination);
+        public void SetDestination(Vector3 destination, float offset)
         {
             var vectorFromDestinationToAgent = _agent.transform.position - destination;
 

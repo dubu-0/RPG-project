@@ -15,7 +15,6 @@ namespace RPG.Locomotion.Animation
             _animator = animator;
         }
         
-        public void Blend() => 
-            _animator.SetFloat(Speed, _agent.velocity.magnitude / _agent.speed);
+        public void Blend() => _animator.SetFloat(Speed, _agent.velocity.magnitude / _agent.speed);
     }
 }
